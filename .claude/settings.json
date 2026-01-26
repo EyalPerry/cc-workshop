@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./scripts/*)",
+      "Bash(./scripts/git_commit.py:*)",
+      "Bash(./scripts/git_squash.py:*)"
+    ]
+  }
+}
