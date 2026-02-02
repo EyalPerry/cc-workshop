@@ -2,8 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(./scripts/*)",
+      "Bash(./scripts/git_branch.py:*)",
+      "Bash(./scripts/git_checkpoint.py:*)",
       "Bash(./scripts/git_commit.py:*)",
-      "Bash(./scripts/git_squash.py:*)"
+      "Bash(./scripts/git_squash.py:*)",
+      "Bash(./scripts/lint.py:*)",
+      "Bash(./scripts/test.py:*)"
     ]
   }
 }

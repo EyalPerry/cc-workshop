@@ -1,6 +1,4 @@
----
-path: {src,test,tests}/**/*.*
----
+<extremely-important>
 # Clean Code
 
 ## General
@@ -38,3 +36,4 @@ path: {src,test,tests}/**/*.*
   - Maintained by well known organizations (for or non profit, e.g. Apache, Linux Foundation, CNCF, etc or alternatively Akamai, Meta, Google, Microsoft etc)
   - Well established and mature.
   - Have an active community and user base according to public metrics (e.g. GitHub stars, forks, issues, StackOverflow questions, etc)
+</extremely-important>

@@ -24,18 +24,28 @@ def clean_pycache() -> None:
         shutil.rmtree(pycache, ignore_errors=True)
 
 
-def needs_docker(targets: list[str]) -> bool:
-    """Check if any target needs Docker.
+def needs_docker_build(targets: list[str]) -> bool:
+    """Check if any target needs a Docker image build.
 
-    Docker is required for:
-    - test/ (all tests)
+    Docker image build is required only for:
+    - test/ (all tests, which includes e2e)
     - test/e2e (end-to-end tests)
-    - test/it (integration tests using testcontainers)
     - test/fr (functional regression tests)
     """
-    docker_prefixes = ("test/it", "test/fr")
+    build_prefixes = ("test/e2e", "test/fr")
     return any(
-        target == "test/" or target.startswith(docker_prefixes) for target in targets
+        target == "test/" or target.startswith(build_prefixes) for target in targets
+    )
+
+
+def needs_docker_image_arg(targets: list[str]) -> bool:
+    """Check if any target needs the --image_name pytest arg.
+
+    Required for e2e and fr tests that reference the built image.
+    """
+    image_prefixes = ("test/e2e", "test/fr")
+    return any(
+        target == "test/" or target.startswith(image_prefixes) for target in targets
     )
 
 
@@ -93,19 +103,16 @@ def main(
         [normalize_target(arg) for arg in targets] if targets else ["test/"]
     )
 
-    # Check if we need Docker image
-    test_needs_docker = needs_docker(normalized_targets)
-
     # Build Docker image if needed (skip in CI)
     is_ci = os.environ.get("CI", "").lower() == "true"
-    if test_needs_docker and not is_ci:
+    if needs_docker_build(normalized_targets) and not is_ci:
         build_docker_image(image_name)
 
     # Build pytest args
     pytest_args: list[str] = ["-v", "--tb=long"]
 
-    # Add image_name arg for e2e tests
-    if test_needs_docker:
+    # Add image_name arg for e2e/fr tests
+    if needs_docker_image_arg(normalized_targets):
         pytest_args.append(f"--image_name={image_name}")
 
     # Strict mode

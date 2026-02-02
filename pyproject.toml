@@ -11,10 +11,11 @@ dependencies = [
     "jinja2>=3.1.6,<4",
     "toolz>=1.1.0,<2",
     "fastapi>=0.115.0",
-    "motor>=3.6.0",
     "pydantic>=2.0.0",
     "pydantic-settings>=2.0.0",
     "uvicorn[standard]>=0.32.0",
+    "asyncpg>=0.29.0,<1",
+    "alembic>=1.13.0,<2",
 ]
 
 [dependency-groups]
@@ -138,6 +139,11 @@ ignore = [
     "PLC0415", # Allow imports not at top level
     "TC002",   # Allow third-party imports outside TYPE_CHECKING
     "TC003",   # Allow stdlib imports outside TYPE_CHECKING
+]
+"src/*" = [
+    "TC001",   # Allow local app imports outside TYPE_CHECKING (used at runtime)
+    "TC002",   # Allow third-party imports outside TYPE_CHECKING (used at runtime)
+    "TC003",   # Allow stdlib imports outside TYPE_CHECKING (used at runtime)
 ]
 
 [tool.ruff.lint.pydocstyle]

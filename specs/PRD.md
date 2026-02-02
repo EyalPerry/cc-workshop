@@ -57,10 +57,22 @@ When jobs fail, retry with configurable:
 
 ### F6: Job States
 
-```
-PENDING → READY → RUNNING → COMPLETED
-                        ↘→ FAILED
-PENDING → BLOCKED
+```mermaid
+stateDiagram-v2
+    [*] --> PENDING: Job Created
+
+    PENDING --> READY: All dependencies completed
+    PENDING --> BLOCKED: Any dependency failed/blocked
+
+    READY --> RUNNING: Scheduler picks job
+
+    RUNNING --> COMPLETED: Execution succeeds
+    RUNNING --> READY: Execution fails, retry allowed
+    RUNNING --> FAILED: Execution fails, no retries left
+
+    COMPLETED --> [*]
+    FAILED --> [*]
+    BLOCKED --> [*]
 ```
 
 - **PENDING**: Waiting for dependencies
