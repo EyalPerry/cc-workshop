@@ -1,5 +1,5 @@
 ---
-path: {src,test,tests}/**/*.py
+path: *.py
 ---
 # Python Development Guidelines
 
